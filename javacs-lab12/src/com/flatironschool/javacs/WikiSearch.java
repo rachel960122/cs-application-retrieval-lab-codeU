@@ -66,11 +66,7 @@ public class WikiSearch {
         	map.put(entry.getKey(), entry.getValue());
         }
         for (Map.Entry<String, Integer> entry : that.map.entrySet()) {
-        	if (map.containsKey(entry.getKey())) {
-        		map.put(entry.getKey(), map.get(entry.getKey()) + entry.getValue());
-        	} else {
-        		map.put(entry.getKey(), entry.getValue());
-        	}
+        	map.put(entry.getKey(), getRelevance(entry.getKey()) + that.getRelevance(entry.getKey()));
         }
         return new WikiSearch(map);
 	}
@@ -137,13 +133,7 @@ public class WikiSearch {
         Collections.sort(list, new Comparator<Entry<String, Integer>>() {
         	@Override
         	public int compare(Entry<String, Integer> e1, Entry<String, Integer> e2) {
-        		if (e1.getValue() < e2.getValue()) {
-        			return -1;
-        		} else if (e1.getValue() > e2.getValue()) {
-        			return 1;
-        		} else {
-        			return 0;
-        		}
+        		return e1.getValue().compareTo(e2.getValue());
         	}
         });
 		return list;
