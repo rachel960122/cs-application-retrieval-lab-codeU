@@ -61,7 +61,18 @@ public class WikiSearch {
 	 */
 	public WikiSearch or(WikiSearch that) {
         // FILL THIS IN!
-		return null;
+        Map<String, Integer> map = new HashMap<String, Integer>();
+        for (Map.Entry<String, Integer> entry : this.map.entrySet()) {
+        	map.put(entry.getKey(), entry.getValue());
+        }
+        for (Map.Entry<String, Integer> entry : that.map.entrySet()) {
+        	if (map.containsKey(entry.getKey())) {
+        		map.put(entry.getKey(), map.get(entry.getKey()) + entry.getValue());
+        	} else {
+        		map.put(entry.getKey(), entry.getValue());
+        	}
+        }
+        return new WikiSearch(map);
 	}
 	
 	/**
@@ -72,7 +83,14 @@ public class WikiSearch {
 	 */
 	public WikiSearch and(WikiSearch that) {
         // FILL THIS IN!
-		return null;
+        Map<String, Integer> map = new HashMap<String, Integer>();
+        for (Map.Entry<String, Integer> entry : this.map.entrySet()) {
+        	String key = entry.getKey();
+        	if (that.map.containsKey(key)) {
+        		map.put(key, this.map.get(key) + that.map.get(key));
+        	}
+        }
+        return new WikiSearch(map);
 	}
 	
 	/**
@@ -83,7 +101,14 @@ public class WikiSearch {
 	 */
 	public WikiSearch minus(WikiSearch that) {
         // FILL THIS IN!
-		return null;
+        Map<String, Integer> map = new HashMap<String, Integer>();
+        for (Map.Entry<String, Integer> entry : this.map.entrySet()) {
+        	String key = entry.getKey();
+        	if (!that.map.containsKey(key)) {
+        		map.put(key, this.map.get(key));
+        	}
+        }
+        return new WikiSearch(map);
 	}
 	
 	/**
@@ -105,7 +130,23 @@ public class WikiSearch {
 	 */
 	public List<Entry<String, Integer>> sort() {
         // FILL THIS IN!
-		return null;
+        List<Entry<String, Integer>> list = new LinkedList<Entry<String, Integer>>();
+        for (Entry<String, Integer> entry : this.map.entrySet()) {
+        	list.add(entry);
+        }
+        Collections.sort(list, new Comparator<Entry<String, Integer>>() {
+        	@Override
+        	public int compare(Entry<String, Integer> e1, Entry<String, Integer> e2) {
+        		if (e1.getValue() < e2.getValue()) {
+        			return -1;
+        		} else if (e1.getValue() > e2.getValue()) {
+        			return 1;
+        		} else {
+        			return 0;
+        		}
+        	}
+        });
+		return list;
 	}
 
 	/**
